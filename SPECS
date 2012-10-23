@@ -1,0 +1,46 @@
+SOMNOS is a register based assembly processor.
+The registers are numbered 0-31.
+
+My goals are to have a processor capable of efficient
+multithreading and scheduling
+
+Instructions:
+LI - Load Immediate
+ex:
+	LI 2 35
+
+Loads the number 35 into register 2
+
+MOV - Move
+ex:
+	MOV 6 17
+
+Copies the value in register 6 to register 17
+
+ADD - Add (duh)
+ex:
+	ADD 3 4 8
+
+Adds the values in registers 3 and 4 and stores
+the result in register 8
+
+SUB - Subtract
+ex:
+	SUB 2 4 3
+
+Subtracts the value in register 2 from the value
+in register 4 and stores the result in register 3
+
+MUL - Multiply
+ex:
+	MUL 1 2 3
+
+Multiplies the values in registers 1 and 2 and
+stores the result in register 3
+
+DIV - Divide
+ex:
+	DIV 3 8 4
+
+Divides the value in register 3 by the value in
+register 8 and stores the result in register 4
