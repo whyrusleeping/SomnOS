@@ -2,7 +2,18 @@
 
 int main()
 {
+	char f[] = "test.jasm";
+	char f2[] = "test2.jasm";
 	System sys;
-	sys.Parse("test.jasm");
-	sys.Run();
+	Thread th(f);	
+	Thread re(f2);
+
+	for(int i = 0; i < 5; i++)
+	{
+		cout << "thread one:\n";
+		sys.Run(th, 10);
+		cout << "thread two:\n";
+		sys.Run(re, 10);
+	}
+	return 0;
 }

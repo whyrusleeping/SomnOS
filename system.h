@@ -1,70 +1,19 @@
-#include <vector>
-#include "instrDefs.h"
+#ifndef SOMN_SYST_H
+#define SOMN_SYST_H
+
+#include "thread.h"
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdlib>
-#include <cstdio>
-#include <map>
 
 #define MAXMEMSIZE 128
 
-using std::map;
-using std::string;
-using std::ifstream;
 using std::cout;
-using std::vector;
-
-#ifdef DEBUG
-	#define DSTAT(VAR) cout << VAR  << "\n";
-#else
-	#define DSTAT(VAR) 
-#endif
-
-typedef struct inst_thrOP
-{
-	unsigned short op : 4;
-	unsigned short opda : 5;
-	unsigned short opdb : 5;
-	unsigned short sto : 5;
-	unsigned short pad : 13;
-}instrHOP;
-
-typedef struct instr_twoOP
-{
-	unsigned short op : 4;
-	unsigned short opda : 5;
-	unsigned int opdb : 23;
-}instrTOP;
-
-typedef struct jumpInstr
-{
-	unsigned short op : 4;
-	unsigned short opt : 1;
-	unsigned int val : 27;
-}jumpInstr;
-
-typedef union instr
-{
-	jumpInstr j;
-	instrTOP t;
-	instrHOP h;
-	int ival;
-}instr;
 
 class System
 {
 	public:
 		System();
-		void Run();		
-		void Parse(char *filename);
-		void Compile(char *filename);
+		void Run(Thread &t, int count);		
 	private:
-		int IC;
-		vector<int> instructions;
-		vector<int> registers;
-		vector<int> memory;
-
 		void add(int a, int b, int sto);
 		void subtract(int a, int b, int sto);
 		void multiply(int a, int b, int sto);
@@ -78,3 +27,4 @@ class System
 
 
 };
+#endif
