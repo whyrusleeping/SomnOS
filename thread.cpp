@@ -6,6 +6,7 @@ Thread::Thread()
 	registers.resize(32);
 	instructions.resize(0);
 	IC = 0;
+	Alive = true;
 }
 
 Thread::Thread(char *filename)
@@ -13,6 +14,7 @@ Thread::Thread(char *filename)
 	registers.resize(32);
 	instructions.resize(0);
 	IC = 0;
+	Alive = true;
 	Parse(filename);
 }
 
@@ -191,4 +193,5 @@ void Thread::Parse(char *filename)
 void Thread::Reset()
 {
 	IC = 0;
+	Alive = true;
 }
