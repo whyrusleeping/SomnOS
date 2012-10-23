@@ -2,16 +2,16 @@
 
 System::System()
 {
-	IC = 0;
 	registers.resize(32);
+	registers[0] = 0;
 	memory.resize(MAXMEMSIZE);
 }
 
 void System::Run()
 {
-	int cur;
 	instr i;
-
+	IC = 0;
+	DSTAT("NUM ISTR: " << instructions.size());
 
 	while(i.h.op != HALT)
 	{ 
@@ -43,26 +43,46 @@ void System::Run()
 				IC = registers[i.t.opda] - 1;
 				break;
 			case JMP:
-				IC = i.t.opdb;
+				IC = i.t.opdb - 1;
 				break;
 			case MOV:
 				registers[i.t.opdb] = registers[i.t.opda];
 				break;
 			case BEQ:
 				if(registers[i.h.opda] == registers[i.h.opdb])
-					IC = registers[i.h.sto] - 1;
+				{
+					if(i.h.pad == 1)
+						IC = registers[i.h.sto] - 1;
+					else
+						IC = i.h.sto - 1;
+				}
 				break;
 			case BNE:
 				if(registers[i.h.opda] != registers[i.h.opdb])
-					IC = registers[i.h.sto] - 1;
+				{
+					if(i.h.pad == 1)
+						IC = registers[i.h.sto] - 1;
+					else
+						IC = i.h.sto - 1;
+				}	
 				break;
 			case BGT:
 				if(registers[i.h.opda] > registers[i.h.opdb])
-					IC = registers[i.h.sto] - 1;
+				{
+					if(i.h.pad == 1)
+						IC = registers[i.h.sto] - 1;
+					else
+						IC = i.h.sto - 1;
+				}
 				break;
 			case BLT:
 				if(registers[i.h.opda] < registers[i.h.opdb])
-					IC = registers[i.h.sto] - 1;
+				{
+					if(i.h.pad == 1)
+						IC = registers[i.h.sto] - 1;
+					else
+						IC = i.h.sto - 1;
+				}
 				break;
 
 		}
@@ -116,19 +136,50 @@ vector<string> splitString(string s, char delim)
 	return ret;
 }
 
+bool startsWith(string src, string t)
+{
+	if(src.length() >= t.length())
+	{
+		for(int i = 0; i < t.length(); i++)
+		{
+			if(t[i] != src[i])
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
 void System::Parse(char *filename)
 {
 	DSTAT("Parsing...\n");
 	instr it;
 	ifstream asmf(filename);
 	vector<string> parts;
+	vector<string> lines;
 	string line;
 	instructions.resize(0);
+	int labelCounter = 0;
+	map<string, int> labels;
 	while(asmf.good())
 	{
 		getline(asmf, line);
-		DSTAT(line);
-		parts = splitString(line, ' ');
+		lines.push_back(line);
+		if(startsWith(line, "LAB"))
+		{
+			string tmpLab = line.substr(4);
+			labels[tmpLab] = labelCounter;
+		}
+		else
+			labelCounter++;
+	}
+
+	DSTAT("finished reading from file");
+
+	for(int j = 0; j < lines.size(); j++)
+	{
+		parts = splitString(lines[j], ' ');
+		DSTAT("parsing" << lines[j]);
 		DSTAT(parts.size());
 		if(parts[0] == "LI")
 		{
@@ -183,35 +234,79 @@ void System::Parse(char *filename)
 		}
 		else if(parts[0] == "JMP")
 		{
-			cout << "JMP NOT YET IMPLEMENTED.\n";
+			it.t.op = JMP;
+			if(isalpha(parts[1][0]))
+			{
+				it.t.opda = labels[parts[1]];
+			}			
+			else
+			{
+				it.t.opda = atoi(parts[1].c_str());
+			}
 		}
 		else if(parts[0] == "BEQ")
 		{
 			it.h.op = BEQ;
 			it.h.opda = atoi(parts[1].c_str());
 			it.h.opdb = atoi(parts[2].c_str());
-			it.h.sto = atoi(parts[3].c_str());
+			if(isalpha(parts[3][0]))
+			{
+				it.h.sto = labels[parts[3]];
+				it.h.pad = 0;
+			}			
+			else
+			{
+				it.h.sto = atoi(parts[3].c_str());
+				it.h.pad = 1;
+			}
 		}
 		else if(parts[0] == "BNE")
 		{
 			it.h.op = BNE;
 			it.h.opda = atoi(parts[1].c_str());
 			it.h.opdb = atoi(parts[2].c_str());
-			it.h.sto = atoi(parts[3].c_str());
+			if(isalpha(parts[3][0]))
+			{
+				it.h.sto = labels[parts[3]];
+				it.h.pad = 0;
+			}			
+			else
+			{
+				it.h.sto = atoi(parts[3].c_str());
+				it.h.pad = 1;
+			}
 		}
 		else if(parts[0] == "BGT")
 		{
 			it.h.op = BGT;
 			it.h.opda = atoi(parts[1].c_str());
 			it.h.opdb = atoi(parts[2].c_str());
-			it.h.sto = atoi(parts[3].c_str());
+			if(isalpha(parts[3][0]))
+			{
+				it.h.sto = labels[parts[3]];
+				it.h.pad = 0;
+			}			
+			else
+			{
+				it.h.sto = atoi(parts[3].c_str());
+				it.h.pad = 1;
+			}
 		}
 		else if(parts[0] == "BLT")
 		{
 			it.h.op = BLT;
 			it.h.opda = atoi(parts[1].c_str());
 			it.h.opdb = atoi(parts[2].c_str());
-			it.h.sto = atoi(parts[3].c_str());
+			if(isalpha(parts[3][0]))
+			{
+				it.h.sto = labels[parts[3]];
+				it.h.pad = 0;
+			}			
+			else
+			{
+				it.h.sto = atoi(parts[3].c_str());
+				it.h.pad = 1;
+			}
 		}
 		else if(parts[0] == "HALT")
 		{
@@ -224,4 +319,9 @@ void System::Parse(char *filename)
 		instructions.push_back(it.ival);
 	}
 	DSTAT("Parse Finished.");
+}
+
+void System::Compile(char *filename)
+{
+
 }

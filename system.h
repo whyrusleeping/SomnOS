@@ -5,12 +5,11 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <map>
 
 #define MAXMEMSIZE 128
 
-
-
-
+using std::map;
 using std::string;
 using std::ifstream;
 using std::cout;
@@ -59,6 +58,7 @@ class System
 		System();
 		void Run();		
 		void Parse(char *filename);
+		void Compile(char *filename);
 	private:
 		int IC;
 		vector<int> instructions;
