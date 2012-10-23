@@ -40,6 +40,7 @@ void Thread::Parse(char *filename)
 			labelCounter++;
 	}
 
+	asmf.close();
 	DSTAT("finished reading from file");
 
 	for(int j = 0; j < lines.size(); j++)
@@ -185,4 +186,9 @@ void Thread::Parse(char *filename)
 		instructions.push_back(it.ival);
 	}
 	DSTAT("Parse Finished.");
+}
+
+void Thread::Reset()
+{
+	IC = 0;
 }
