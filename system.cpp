@@ -2,7 +2,7 @@
 
 System::System()
 {
-
+	//Nothing to do here yet...
 }
 
 void System::Run(Thread &t, int count)
@@ -10,7 +10,7 @@ void System::Run(Thread &t, int count)
 	instr i;
 	i.ival = 0;
 
-	while(i.h.op != HALT && count-- > 0)
+	while(i.h.op != HALT && count--  > 0 && t.Alive) 
 	{ 
 		i.ival = t.instructions[t.IC];
 		//DSTAT("Operand: " << i.h.op << "  IC: " << t.IC);
@@ -86,5 +86,7 @@ void System::Run(Thread &t, int count)
 		}
 		t.IC++;
 	}	
+	if(i.h.op == HALT)
+		t.Alive = false;
 }
 
