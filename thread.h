@@ -22,10 +22,12 @@ class Thread
 		Thread(char *filename);
 		void Parse(char *filename);
 		int Compile();
+		void Reset();
 	private:
 		vector<int> instructions;
 		vector<int> registers;
 		int IC;
+		bool Alive;
 };
 
 #endif
