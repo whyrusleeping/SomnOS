@@ -6,9 +6,9 @@
 #define SUB 1
 #define MUL 2
 #define DIV 3
+#define MEM 4
 
-
-#define PRINTN 6
+#define PRINT 6
 #define LI 7
 #define JR 8
 #define JMP 9

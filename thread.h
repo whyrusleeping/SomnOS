@@ -23,11 +23,15 @@ class Thread
 		void Parse(char *filename);
 		int Compile();
 		void Reset();
+		void SetMemLoc(int l);
 	private:
 		vector<int> instructions;
 		vector<int> registers;
 		int IC;
 		bool Alive;
+		int priority;
+		int memStart;
+		string name;
 };
 
 #endif

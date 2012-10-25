@@ -7,6 +7,7 @@ Thread::Thread()
 	instructions.resize(0);
 	IC = 0;
 	Alive = true;
+	priority = 0;
 }
 
 Thread::Thread(char *filename)
@@ -15,11 +16,13 @@ Thread::Thread(char *filename)
 	instructions.resize(0);
 	IC = 0;
 	Alive = true;
+	priority = 0;
 	Parse(filename);
 }
 
 void Thread::Parse(char *filename)
 {
+	name = filename;
 	DSTAT("Parsing...\n");
 	instr it;
 	ifstream asmf(filename);
@@ -91,9 +94,9 @@ void Thread::Parse(char *filename)
 			it.t.opda = atoi(parts[1].c_str());
 			it.t.opdb = atoi(parts[2].c_str());
 		}
-		else if(parts[0] == "PRINTN")
+		else if(parts[0] == "PRINT")
 		{
-			it.t.op = PRINTN;
+			it.t.op = PRINT;
 			it.t.opda = atoi(parts[1].c_str());
 		}
 		else if(parts[0] == "JR")
@@ -194,4 +197,29 @@ void Thread::Reset()
 {
 	IC = 0;
 	Alive = true;
+}
+
+void Thread::SetMemLoc(int l)
+{
+	IC = l;
+	memStart = l;
+	for(int i = 0; i < instructions.size(); i++)
+	{
+		instrHOP& is = *((instrHOP*)&instructions[i]);
+		switch(is.op)
+		{
+			case JR:
+				cout << "not sure what to do with JR...\n";
+				break;
+			case JMP:
+				is.opdb += l;
+			   	break;
+			case BNE:
+			case BEQ:
+			case BGT:
+			case BLT:
+				is.sto += l;
+
+		}
+	}
 }

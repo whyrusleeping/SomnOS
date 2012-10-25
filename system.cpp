@@ -3,16 +3,52 @@
 System::System()
 {
 	//Nothing to do here yet...
+	run = true;
+	freeMemI = 0;
+	memory.resize(MAXMEMSIZE);
 }
 
-void System::Run(Thread &t, int count)
+void System::LoadProcess(Thread t)
+{
+	t.SetMemLoc(freeMemI);
+	threads.push_back(t);
+
+	for(int i = 0; i < t.instructions.size(); i++)
+	{
+		memory[freeMemI + i] = t.instructions[i];
+	}
+	freeMemI += t.instructions.size();
+	
+}
+
+void System::Start()
+{
+	DSTAT("Num Threads: " << threads.size());
+	while(run)
+	{
+		for(int i = 0; i < threads.size(); i++)
+		{
+			Execute(threads[i],2);
+			if(!threads[i].Alive)
+			{
+				DSTAT("Killing Thread.");
+				threads.erase(threads.begin() + i);
+			}
+		}
+		if(threads.size() == 0)
+			run = false;
+	}
+}
+
+void System::Execute(Thread &t, int count)
 {
 	instr i;
 	i.ival = 0;
 
-	while(i.h.op != HALT && count--  > 0 && t.Alive) 
+	while(i.h.op != HALT && count-- > 0 && t.Alive) 
 	{ 
-		i.ival = t.instructions[t.IC];
+		//i.ival = t.instructions[t.IC];
+		i.ival = memory[t.IC];
 		//DSTAT("Operand: " << i.h.op << "  IC: " << t.IC);
 		switch(i.h.op)
 		{
@@ -20,7 +56,6 @@ void System::Run(Thread &t, int count)
 				t.registers[i.h.sto] = t.registers[i.h.opda] + t.registers[i.h.opdb];
 				break;
 			case SUB:
-				DSTAT(t.registers[i.h.opda] << " -  " << t.registers[i.h.opdb] << " into " << i.h.sto);
 				t.registers[i.h.sto] = t.registers[i.h.opda] - t.registers[i.h.opdb];
 				break;
 			case MUL:
@@ -30,7 +65,8 @@ void System::Run(Thread &t, int count)
 				t.registers[i.h.sto] = t.registers[i.h.opda] / t.registers[i.h.opdb];
 				break;
 			
-			case PRINTN:
+			case PRINT:
+				DSTAT(t.name << ":" << t.IC);
 				cout << t.registers[i.t.opda] << "\n";
 				break;
 
@@ -87,6 +123,8 @@ void System::Run(Thread &t, int count)
 		t.IC++;
 	}	
 	if(i.h.op == HALT)
+	{
 		t.Alive = false;
+	}
 }
 

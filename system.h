@@ -4,7 +4,7 @@
 #include "thread.h"
 #include <iostream>
 
-#define MAXMEMSIZE 128
+#define MAXMEMSIZE 1024
 
 using std::cout;
 
@@ -12,8 +12,15 @@ class System
 {
 	public:
 		System();
-		void Run(Thread &t, int count);		
+		void Start();
+		void LoadProcess(Thread t);
+		void Execute(Thread &t, int count);		
 	private:
+		vector<Thread> threads;
+		vector<int> memory;
+		int freeMemI;
+
+		bool run;
 		void add(int a, int b, int sto);
 		void subtract(int a, int b, int sto);
 		void multiply(int a, int b, int sto);
