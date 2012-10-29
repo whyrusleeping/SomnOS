@@ -57,7 +57,14 @@ void Thread::Parse(char *filename)
 		{
 			it.t.op = LI;
 			it.t.opda = atoi(parts[1].c_str());
-			it.t.opdb = atoi(parts[2].c_str());
+						
+			if(parts[2][0] == '#')
+				it.t.opdb = atoi(&(parts[2].c_str()[1]));
+			else
+			{
+				cout << "Invalid Parameter to LI on line: " << j << "\n";
+				exit(1);
+			}
 		}
 		else if(parts[0] == "LR")
 		{
