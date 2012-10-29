@@ -5,7 +5,7 @@ System::System()
 	//Nothing to do here yet...
 	run = true;
 	freeMemI = 0;
-	memory.resize(MAXMEMSIZE);
+	memory.resize(MAXMEMSIZE,0);
 }
 
 void System::LoadProcess(Thread t)
@@ -21,23 +21,91 @@ void System::LoadProcess(Thread t)
 	
 }
 
-void System::Start()
+void System::RestoreKeyboardBlocking()
 {
-	DSTAT("Num Threads: " << threads.size());
+	tcsetattr(0, TCSANOW, &initial_settings);
+}
+
+void System::SetKeyboardNonBlock()
+{
+	
+	struct termios new_settings;
+  	tcgetattr(0,&initial_settings);
+
+   new_settings = initial_settings;
+   new_settings.c_lflag &= ~ICANON;
+   new_settings.c_lflag &= ~ECHO;
+   new_settings.c_lflag &= ~ISIG;
+   new_settings.c_cc[VMIN] = 0;
+   new_settings.c_cc[VTIME] = 0;
+
+   tcsetattr(0, TCSANOW, &new_settings);
+}
+
+void System::Test()
+{
+	SetKeyboardNonBlock();
+	//bool nrun = true;
+	int a = 50;
+	char inp = 0;
 	while(run)
 	{
+		inp = getchar();
+		if(inp > 0)
+		{
+			memory[512] = inp;
+			inp = 0;
+		}
 		for(int i = 0; i < threads.size(); i++)
 		{
-			Execute(threads[i],2);
+			Execute(threads[i],2 + threads[i].priority);
 			if(!threads[i].Alive)
 			{
 				DSTAT("Killing Thread.");
 				threads.erase(threads.begin() + i);
 			}
 		}
+
+		if(threads.size() == 0)
+			run = false;
+
+	}
+	RestoreKeyboardBlocking();
+}
+
+//Main system scheduler
+void System::Start()
+{
+	SetKeyboardNonBlock();
+	DSTAT("Num Threads: " << threads.size());
+	char inp = 0;
+	int nr = 0;
+	while(run)
+	{
+		
+		for(int i = 0; i < threads.size(); i++)
+		{
+			Execute(threads[i],2 + threads[i].priority);
+			if(!threads[i].Alive)
+			{
+				DSTAT("Killing Thread.");
+				threads.erase(threads.begin() + i);
+			}
+		}
+		
+
+		inp = getchar();
+		if(inp > 0)
+		{
+			memory[KEYBOARD_BUFFER] = inp;
+			cout << "Read " << inp << "\n";
+			inp = 0;
+		}
+
 		if(threads.size() == 0)
 			run = false;
 	}
+	RestoreKeyboardBlocking();
 }
 
 void System::Execute(Thread &t, int count)
@@ -49,7 +117,7 @@ void System::Execute(Thread &t, int count)
 	{ 
 		//i.ival = t.instructions[t.IC];
 		i.ival = memory[t.IC];
-		//DSTAT("Operand: " << i.h.op << "  IC: " << t.IC);
+		DSTAT("Operand: " << i.h.op << "  IC: " << t.IC);
 		switch(i.h.op)
 		{
 			case ADD:
@@ -64,14 +132,21 @@ void System::Execute(Thread &t, int count)
 			case DIV:
 				t.registers[i.h.sto] = t.registers[i.h.opda] / t.registers[i.h.opdb];
 				break;
-			
 			case PRINT:
 				DSTAT(t.name << ":" << t.IC);
 				cout << t.registers[i.t.opda] << "\n";
 				break;
-
 			case LI:
 				t.registers[i.t.opda] = i.t.opdb;
+				break;
+			case LR:
+				DSTAT("Memory at: " << i.t.opda << " " << i.t.opdb);
+				DSTAT("READING: " << memory[t.registers[i.t.opdb]]); 
+				t.registers[i.t.opda] = memory[t.registers[i.t.opdb]];
+				break;
+			case SR:
+				DSTAT("Storing Value " << t.registers[i.t.opda]);
+				memory[i.t.opdb] = t.registers[i.t.opda];
 				break;
 			case JR:
 				t.IC = t.registers[i.t.opda] - 1;
@@ -83,6 +158,7 @@ void System::Execute(Thread &t, int count)
 				t.registers[i.t.opdb] = t.registers[i.t.opda];
 				break;
 			case BEQ:
+				DSTAT("reg[a] = " << t.registers[i.h.opda] << " reg[b] = " << t.registers[i.h.opdb]);
 				if(t.registers[i.h.opda] == t.registers[i.h.opdb])
 				{
 					if(i.h.pad == 1)

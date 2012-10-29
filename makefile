@@ -1,21 +1,30 @@
+# makefile for somnOS VM
+# by Jeromy Johnson
+
+# I want to try clang out sometime
 CC=g++
+
 CFLAGS=
 
-all: system.o
-	$(CC) main.cpp system.o $(CFLAGS) -o testrun
+
+all: system.o thread.o utils.o
+	$(CC) main.cpp system.o thread.o utils.o $(CFLAGS) -o testrun
 
 debug: clean debug_set all
 
 debug_set: 
 	$(eval CFLAGS := -DDEBUG)
 
-system.o:	
-	$(CC) -c system.cpp thread.cpp utils.cpp $(CFLAGS)
+system.o: 
+	$(CC) -c system.cpp  $(CFLAGS)
+
+thread.o:
+	$(CC) -c thread.cpp $(CFLAGS)
+
+utils.o:
+	$(CC) -c utils.cpp $(CFLAGS)
 
 clean:
 	-rm *.o
 
-force: clean
-	$(CC) main.cpp system.cpp thread.cpp utils.cpp $(CFLAGS) -o testrun
-
-dforce: debug_set force
+rebuild: clean all

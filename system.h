@@ -3,8 +3,11 @@
 
 #include "thread.h"
 #include <iostream>
+#include <cstdlib>
+#include <termios.h>
 
 #define MAXMEMSIZE 1024
+#define KEYBOARD_BUFFER 512
 
 using std::cout;
 
@@ -15,10 +18,14 @@ class System
 		void Start();
 		void LoadProcess(Thread t);
 		void Execute(Thread &t, int count);		
+		void Test();
 	private:
 		vector<Thread> threads;
 		vector<int> memory;
 		int freeMemI;
+		struct termios initial_settings;
+		void SetKeyboardNonBlock();
+		void RestoreKeyboardBlocking();
 
 		bool run;
 		void add(int a, int b, int sto);
