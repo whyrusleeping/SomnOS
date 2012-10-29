@@ -2,12 +2,13 @@
 #define INSTR_DEFS_H
 
 //Command opcodes
+#define OPCODE 0xF0000000
 #define ADD 0
 #define SUB 1
 #define MUL 2
 #define DIV 3
-#define MEM 4
-
+#define SR 4
+#define LR 5
 #define PRINT 6
 #define LI 7
 #define JR 8
@@ -31,8 +32,20 @@ typedef struct inst_thrOP
 	unsigned short opda : 5;
 	unsigned short opdb : 5;
 	unsigned short sto : 5;
-	unsigned short pad : 13;
+	unsigned short fa : 1;
+	unsigned short fb : 1;
+	unsigned short pad : 10;
 }instrHOP;
+
+//Three operand bitmasks
+#define H_OPDA 0xF8000000
+#define H_OPDB 0x7C00000
+#define H_STO  0x3E0000
+#define H_FA   0x10000
+#define H_FB   0x8000
+
+//For two operand commands, the second longer operand:
+#define T_OPDB 0x7FFFFF
 
 typedef struct instr_twoOP
 {
@@ -40,6 +53,8 @@ typedef struct instr_twoOP
 	unsigned short opda : 5;
 	unsigned int opdb : 23;
 }instrTOP;
+
+
 
 typedef struct jumpInstr
 {
