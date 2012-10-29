@@ -24,6 +24,7 @@ class Thread
 		int Compile();
 		void Reset();
 		void SetMemLoc(int l);
+		void SetPriority(int p);
 	private:
 		vector<int> instructions;
 		vector<int> registers;

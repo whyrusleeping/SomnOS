@@ -3,7 +3,7 @@
 
 Thread::Thread()
 {
-	registers.resize(32);
+	registers.resize(32,0);
 	instructions.resize(0);
 	IC = 0;
 	Alive = true;
@@ -12,7 +12,7 @@ Thread::Thread()
 
 Thread::Thread(char *filename)
 {	
-	registers.resize(32);
+	registers.resize(32,0);
 	instructions.resize(0);
 	IC = 0;
 	Alive = true;
@@ -56,6 +56,18 @@ void Thread::Parse(char *filename)
 		if(parts[0] == "LI")
 		{
 			it.t.op = LI;
+			it.t.opda = atoi(parts[1].c_str());
+			it.t.opdb = atoi(parts[2].c_str());
+		}
+		else if(parts[0] == "LR")
+		{
+			it.t.op = LR;
+			it.t.opda = atoi(parts[1].c_str());
+			it.t.opdb = atoi(parts[2].c_str());
+		}
+		else if(parts[0] == "SR")
+		{
+			it.t.op = SR;
 			it.t.opda = atoi(parts[1].c_str());
 			it.t.opdb = atoi(parts[2].c_str());
 		}
@@ -221,5 +233,13 @@ void Thread::SetMemLoc(int l)
 				is.sto += l;
 
 		}
+	}
+}
+
+void Thread::SetPriority(int p)
+{
+	if(p >= 0)
+	{
+		priority = p;
 	}
 }
