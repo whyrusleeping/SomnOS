@@ -53,9 +53,16 @@ void System::Test()
 		inp = getchar();
 		if(inp > 0)
 		{
-			memory[512] = inp;
+			memory[KEYBOARD_BUFFER] = inp;
 			inp = 0;
 		}
+
+		if(memory[SCREEN_BUFFER] != 0)
+		{
+			cout << (char)memory[SCREEN_BUFFER];
+			memory[SCREEN_BUFFER] = 0;
+		}
+
 		for(int i = 0; i < threads.size(); i++)
 		{
 			Execute(threads[i],2 + threads[i].priority);
@@ -146,7 +153,7 @@ void System::Execute(Thread &t, int count)
 				break;
 			case SR:
 				DSTAT("Storing Value " << t.registers[i.t.opda]);
-				memory[i.t.opdb] = t.registers[i.t.opda];
+				memory[t.registers[i.t.opdb]] = t.registers[i.t.opda];
 				break;
 			case JR:
 				t.IC = t.registers[i.t.opda] - 1;

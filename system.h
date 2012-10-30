@@ -8,6 +8,7 @@
 
 #define MAXMEMSIZE 1024
 #define KEYBOARD_BUFFER 512
+#define SCREEN_BUFFER 516
 
 using std::cout;
 
