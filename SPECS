@@ -61,9 +61,9 @@ address in register r1
 
 PRINT - Print to Terminal
 ex:
-	PRINT 2
+	PRINT r2
 
-Prints the value stored in register 2 to the screen
+Prints the value stored in register r2 to the screen
 
 LAB - Label
 ex:
