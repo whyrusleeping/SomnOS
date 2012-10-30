@@ -1,5 +1,5 @@
 SOMNOS is a register based assembly processor.
-The registers are numbered 0-31.
+The registers are numbered r0-r31.
 
 My goals are to have a processor capable of efficient
 multithreading and scheduling
@@ -7,15 +7,15 @@ multithreading and scheduling
 Instructions:
 LI - Load Immediate
 ex:
-	LI 2 35
+	LI r2 #35
 
-Loads the number 35 into register 2
+Loads the number 35 into register r2
 
 MOV - Move
 ex:
-	MOV 6 17
+	MOV r6 r17
 
-Copies the value in register 6 to register 17
+Copies the value in register r6 to register r17
 
 ADD - Add (duh)
 ex:
@@ -26,38 +26,38 @@ the result in register 8
 
 SUB - Subtract
 ex:
-	SUB 2 4 3
+	SUB r2 r4 r3
 
-Subtracts the value in register 2 from the value
-in register 4 and stores the result in register 3
+Subtracts the value in register r2 from the value
+in register r4 and stores the result in register r3
 
 MUL - Multiply
 ex:
-	MUL 1 2 3
+	MUL r1 r2 r3
 
-Multiplies the values in registers 1 and 2 and
-stores the result in register 3
+Multiplies the values in registers r1 and r2 and
+stores the result in register r3
 
 DIV - Divide
 ex:
-	DIV 3 8 4
+	DIV r3 r8 r4
 
-Divides the value in register 3 by the value in
-register 8 and stores the result in register 4
+Divides the value in register r3 by the value in
+register r8 and stores the result in register r4
 
 LR - Load Register
 ex:
-	LR 2 4
+	LR r2 r4
 
-Loads the value stored in memory at the address in 4
-into register 2
+Loads the value stored in memory at the address in r4
+into register r2
 
 SR - Store Register
 ex:
-	SR 3 1
+	SR r3 r1
 
-Stores the value in register 3 to memory at the 
-address in register 1
+Stores the value in register r3 to memory at the 
+address in register r1
 
 PRINT - Print to Terminal
 ex:
@@ -74,31 +74,31 @@ commands may reference.
 
 BEQ - Branch when equal
 ex:
-	BEQ 2 6 LOOPTOP
+	BEQ r2 r6 LOOPTOP
 
-If the values in registers 2 and 6 are equal, jump
+If the values in registers r2 and r6 are equal, jump
 to the LOOPTOP label
 
 BNE - Branch when not equal
 ex:
-	BNE 1 2 END
+	BNE r1 r2 END
 
-If the values in registers 1 and 2 are not equal
+If the values in registers r1 and r2 are not equal
 jump to the END label
 
 BGT - Branch greater than
 ex:
-	BGT 5 2 SOMEWHERE
+	BGT r5 r2 SOMEWHERE
 
-If the value in register 5 is greater than the value
-in register 2, jump to the label SOMEWHERE
+If the value in register r5 is greater than the value
+in register r2, jump to the label SOMEWHERE
 
 BLT - Branch less than
 ex:
-	BLT 5 2 SOMEWHERE
+	BLT r5 r2 SOMEWHERE
 
-If the value in register 5 is less than the value
-in register 2, jump to the label SOMEWHERE
+If the value in register r5 is less than the value
+in register r2, jump to the label SOMEWHERE
 
 HALT - Halt
 ex:

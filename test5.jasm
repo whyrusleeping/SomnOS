@@ -1,0 +1,15 @@
+LI r1 #512 //keyboard buffer location
+LI r2 #0
+LI r3 #0
+LI r4 #0
+LI r5 #3
+LAB LOOP
+LR r2 r1
+BEQ r2 r4 LOOP
+BEQ r2 r5 END
+PRINT r2
+LI r2 r0 //clear variable so it doesnt keep looping
+SR r4 r1 //reset the buffer
+BEQ r3 r4 LOOP
+LAB END
+HALT
