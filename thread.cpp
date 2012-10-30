@@ -105,8 +105,8 @@ void Thread::Parse(char *filename)
 		else if(parts[0] == "SR")
 		{
 			it.t.op = SR;
-			it.t.opda = atoi(parts[1].c_str());
-			it.t.opdb = atoi(parts[2].c_str());
+			it.t.opda = parseReg(parts[1], j);
+			it.t.opdb = parseReg(parts[2], j);
 		}
 		else if(parts[0] == "ADD")
 		{
