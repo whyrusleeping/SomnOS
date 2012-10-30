@@ -56,7 +56,15 @@ void Thread::Parse(char *filename)
 		if(parts[0] == "LI")
 		{
 			it.t.op = LI;
-			it.t.opda = atoi(parts[1].c_str());
+
+			if(parts[1][0] == 'r')
+			{
+				it.t.opda = atoi(&(parts[1].c_str()[1]));
+			}
+			else
+			{
+				cout << "Invalid Parameter to LI on line: " << j << "\n";
+			}
 						
 			if(parts[2][0] == '#')
 				it.t.opdb = atoi(&(parts[2].c_str()[1]));
@@ -81,8 +89,23 @@ void Thread::Parse(char *filename)
 		else if(parts[0] == "ADD")
 		{
 			it.h.op = ADD;
-			it.h.opda = atoi(parts[1].c_str());
+			if(parts[1][0] == 'r')
+			{
+				it.t.opda = atoi(&(parts[1].c_str()[1]));
+			}
+			else
+			{
+				cout << "Invalid Parameter to ADD on line: " << j << "\n";
+			}
 			it.h.opdb = atoi(parts[2].c_str());
+			if(parts[2][0] == 'r')
+			{
+				it.t.opdb = atoi(&(parts[2].c_str()[1]));
+			}
+			else
+			{
+				cout << "Invalid Parameter to ADD on line: " << j << "\n";
+			}
 			it.h.sto = atoi(parts[3].c_str());	
 		}
 		else if(parts[0] == "SUB")
