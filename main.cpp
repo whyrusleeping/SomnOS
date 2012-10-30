@@ -8,8 +8,8 @@ int main()
 	char f4[] = "test4.jasm";
 	char f5[] = "test5.jasm";
 	System sys;
-	Thread kb(f5);
-	//Thread th(f);	
+	//Thread kb(f5);
+	Thread th(f);	
 	//Thread re(f2);
 	//Thread ad(f3);
 	//Thread ne(f4);
@@ -19,8 +19,8 @@ int main()
 	DSTAT("loading processes...");
 
 
-	sys.LoadProcess(kb);
-	//sys.LoadProcess(th);
+	//sys.LoadProcess(kb);
+	sys.LoadProcess(th);
 	//sys.LoadProcess(re);
 	//sys.LoadProcess(ad);
 	//sys.LoadProcess(ne);
