@@ -2,7 +2,7 @@
 #define INSTR_DEFS_H
 
 //Command opcodes
-#define OPCODE 0xF0000000
+#define OPCODE 0xF8000000
 #define ADD 0
 #define SUB 1
 #define MUL 2
@@ -38,11 +38,11 @@ typedef struct inst_thrOP
 }instrHOP;
 
 //Three operand bitmasks
-#define H_OPDA 0xF8000000
-#define H_OPDB 0x7C00000
-#define H_STO  0x3E0000
-#define H_FA   0x10000
-#define H_FB   0x8000
+#define H_OPDA 0x7C00000
+#define H_OPDB 0x3E0000
+#define H_STO  0x1F000
+#define H_FA   0x800
+#define H_FB   0x400
 
 //For two operand commands, the second longer operand:
 #define T_OPDB 0x7FFFFF

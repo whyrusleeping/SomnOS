@@ -24,7 +24,18 @@ thread.o:
 utils.o:
 	$(CC) -c utils.cpp $(CFLAGS)
 
+instruction.o:
+	$(CC) -c instruction.cpp $(CFLAGS)
+
 clean:
 	-rm *.o
 
 rebuild: clean all
+
+
+# Start Tests
+
+alltests: clean instructionTest
+
+instructionTest: instruction.o
+	$(CC) instructionTest.cpp instruction.o $(CFLAGS) -o instrTest
