@@ -18,6 +18,9 @@ class Instruction
 		int getOpdb();
 		void setOpdb(int opdb);
 
+		int getOpdbAlt();
+		void setOpdbAlt(int opdbA);
+
 		int getStoVal();
 		void setStoVal(int sto);
 

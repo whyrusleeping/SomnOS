@@ -41,11 +41,11 @@ typedef struct inst_thrOP
 #define H_OPDA 0x7C00000
 #define H_OPDB 0x3E0000
 #define H_STO  0x1F000
-#define H_FA   0x800
-#define H_FB   0x400
+#define H_FA   0x2
+#define H_FB   0x1
 
 //For two operand commands, the second longer operand:
-#define T_OPDB 0x7FFFFF
+#define T_OPDB 0x3FFFFC
 
 typedef struct instr_twoOP
 {

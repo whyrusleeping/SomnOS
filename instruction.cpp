@@ -38,6 +38,16 @@ void Instruction::setOpdb(int opdb)
 	VALUE = ((opdb << 17) | (VALUE & (~H_OPDB)));
 }
 
+int Instruction::getOpdbAlt()
+{
+	return (VALUE & T_OPDB) >> 3;
+}
+
+void Instruction::setOpdbAlt(int opdb)
+{
+	VALUE = ((opdb << 3) | (VALUE & (~T_OPDB)));
+}
+
 int Instruction::getStoVal()
 {
 	return (VALUE & H_STO) >> 12;
@@ -50,20 +60,20 @@ void Instruction::setStoVal(int sto)
 
 int Instruction::getFlagA()
 {
-	return (VALUE & H_FA) >> 11;
+	return (VALUE & H_FA) >> 1;
 }
 
 void Instruction::setFlagA(int fa)
 {
-	VALUE = ((fa << 11) | (VALUE & (~H_FA)));
+	VALUE = ((fa << 1) | (VALUE & (~H_FA)));
 }
 
 int Instruction::getFlagB()
 {
-	return (VALUE & H_FB) >> 10;
+	return (VALUE & H_FB);
 }
 
 void Instruction::setFlagB(int fb)
 {
-	VALUE = ((fb << 10) | (VALUE & (~H_FB)));
+	VALUE = (fb | (VALUE & (~H_FB)));
 }
