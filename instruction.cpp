@@ -40,12 +40,12 @@ void Instruction::setOpdb(int opdb)
 
 int Instruction::getOpdbAlt()
 {
-	return (VALUE & T_OPDB) >> 3;
+	return (VALUE & T_OPDB) >> 2;
 }
 
 void Instruction::setOpdbAlt(int opdb)
 {
-	VALUE = ((opdb << 3) | (VALUE & (~T_OPDB)));
+	VALUE = ((opdb << 2) | (VALUE & (~T_OPDB)));
 }
 
 int Instruction::getStoVal()
