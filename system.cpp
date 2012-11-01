@@ -117,14 +117,14 @@ void System::Start()
 
 void System::Execute(Thread &t, int count)
 {
-	instr i;
-	i.ival = 0;
+	Instruction i;
+	i.VALUE = 0;
 
-	while(i.h.op != HALT && count-- > 0 && t.Alive) 
+	while(i.getOpCode() != HALT && count-- > 0 && t.Alive) 
 	{ 
 		//i.ival = t.instructions[t.IC];
-		i.ival = memory[t.IC];
-		DSTAT("Operand: " << i.h.op << "  IC: " << t.IC);
+		i.VALUE = memory[t.IC];
+		DSTAT("Operand: " << i.get << "  IC: " << t.IC);
 		switch(i.h.op)
 		{
 			case ADD:

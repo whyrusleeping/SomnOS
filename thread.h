@@ -1,7 +1,8 @@
 #ifndef SOMN_THREAD_H
 #define SOMN_THREAD_H
 
-#include "instrDefs.h"
+//#include "instrDefs.h"
+#include "instruction.h"
 #include "utils.h"
 #include <cstdlib>
 #include <fstream>
@@ -35,7 +36,7 @@ class Thread
 		string name;
 
 		int parseReg(string token, int line);
-		void parseMath(vector<string> &tokens, instr &it, int line);
+		void parseMath(vector<string> &tokens, Instruction &it, int line);
 };
 
 #endif

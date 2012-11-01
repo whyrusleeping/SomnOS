@@ -33,18 +33,18 @@ int Thread::parseReg(string token, int line)
 	}
 }
 
-void Thread::parseMath(vector<string> &tokens, instr &it, int line)
+void Thread::parseMath(vector<string> &tokens, Instruction &it, int line)
 {
-	it.h.opda = parseReg(tokens[1], line);
-	it.h.opdb = parseReg(tokens[2], line);
-	it.h.sto =  parseReg(tokens[3], line);
+	it.setOpda(parseReg(tokens[1], line));
+	it.setOpdb(parseReg(tokens[2], line));
+	it.setStoVal(parseReg(tokens[3], line));
 }
 
 void Thread::Parse(char *filename)
 {
 	name = filename;
 	DSTAT("Parsing...\n");
-	instr it;
+	Instruction it;
 	ifstream asmf(filename);
 	vector<string> parts;
 	vector<string> lines;
@@ -84,12 +84,14 @@ void Thread::Parse(char *filename)
 		DSTAT(parts.size());
 		if(parts[0] == "LI")
 		{
-			it.t.op = LI;
+			it.setOpCode(LI);
+			
+			it.setOpda(parseReg(parts[1], j));
 
-			it.t.opda = parseReg(parts[1], j);
-						
 			if(parts[2][0] == '#')
-				it.t.opdb = atoi(&(parts[2].c_str()[1]));
+			{
+				it.setOpdbAlt(atoi(&(parts[2].c_str()[1])));
+			}
 			else
 			{
 				cout << "Invalid Parameter to LI on line: " << j << "\n";
@@ -98,139 +100,145 @@ void Thread::Parse(char *filename)
 		}
 		else if(parts[0] == "LR")
 		{
-			it.t.op = LR;
-			it.t.opda = parseReg(parts[1], j);
-			it.t.opdb = parseReg(parts[2], j);
+			it.setOpCode(LR);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 		}
 		else if(parts[0] == "SR")
 		{
-			it.t.op = SR;
-			it.t.opda = parseReg(parts[1], j);
-			it.t.opdb = parseReg(parts[2], j);
+			it.setOpCode(SR);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 		}
 		else if(parts[0] == "ADD")
 		{
-			it.h.op = ADD;
+			it.setOpCode(ADD);
 			parseMath(parts, it, j);
 		}
 		else if(parts[0] == "SUB")
 		{
-			it.h.op = SUB;
+			it.setOpCode(SUB);
 			parseMath(parts, it, j);
 		}
 		else if(parts[0] == "MUL")
 		{
-			it.h.op = MUL;
+			it.setOpCode(MUL);
 			parseMath(parts, it, j);
 		}
 		else if(parts[0] == "DIV")
 		{
-			it.h.op = DIV;
+			it.setOpCode(DIV);
 			parseMath(parts, it, j);
 		}
 		else if(parts[0] == "MOV")
 		{
-			it.t.op = MOV;
-			it.t.opda = parseReg(parts[1], j);
-			it.t.opdb = parseReg(parts[2], j);
+			it.setOpCode(MOV);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 		}
 		else if(parts[0] == "PRINT")
 		{
-			it.t.op = PRINT;
-			it.t.opda = parseReg(parts[1], j);
+			it.setOpCode(PRINT);
+			it.setOpdb(parseReg(parts[1], j));
+
 		}
 		else if(parts[0] == "JR")
 		{
-			it.t.op = JR;
-			it.t.opda = parseReg(parts[1], j);	
+			it.setOpCode(JR);
+			it.setOpda(parseReg(parts[1], j));	
 		}
 		else if(parts[0] == "JMP")
 		{
-			it.t.op = JMP;
+			it.setOpCode(JMP);
 			if(isalpha(parts[1][0]))
 			{
-				it.t.opda = labels[parts[1]];
+				it.setOpdbAlt(labels[parts[1]]);
 			}			
 			else
 			{
-				it.t.opda = atoi(parts[1].c_str());
+				it.setOpdbAlt(atoi(parts[1].c_str()));
 			}
 		}
 		else if(parts[0] == "BEQ")
 		{
-			it.h.op = BEQ;
-			it.h.opda = parseReg(parts[1], j);
-			it.h.opdb = parseReg(parts[2], j);
+			it.setOpCode(BEQ);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 			if(isalpha(parts[3][0]))
 			{
 				//jump to a label
-				it.h.sto = labels[parts[3]];
-				it.h.pad = 0;
+				it.setStoVal(labels[parts[3]]);
+				it.setFlagA(0);
 			}			
 			else
 			{
 				//jump to a line number
-				it.h.sto = atoi(parts[3].c_str());
-				it.h.pad = 1;
+				it.setStoVal(atoi(parts[3].c_str()));
+				it.setFlagA(1);
 			}
 		}
 		else if(parts[0] == "BNE")
 		{
-			it.h.op = BNE;
-			it.h.opda = parseReg(parts[1], j);
-			it.h.opdb = parseReg(parts[2], j);
+			it.setOpCode(BNE);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 			if(isalpha(parts[3][0]))
 			{
-				it.h.sto = labels[parts[3]];
-				it.h.pad = 0;
+				//jump to a label
+				it.setStoVal(labels[parts[3]]);
+				it.setFlagA(0);
 			}			
 			else
 			{
-				it.h.sto = atoi(parts[3].c_str());
-				it.h.pad = 1;
+				//jump to a line number
+				it.setStoVal(atoi(parts[3].c_str()));
+				it.setFlagA(1);
 			}
 		}
 		else if(parts[0] == "BGT")
 		{
-			it.h.op = BGT;
-			it.h.opda = parseReg(parts[1], j);
-			it.h.opdb = parseReg(parts[2], j);
+			it.setOpCode(BGT);
+			it.setOpda(parseReg(parts[1], j));
+			it.setOpdb(parseReg(parts[2], j));
 			if(isalpha(parts[3][0]))
 			{
-				it.h.sto = labels[parts[3]];
-				it.h.pad = 0;
+				//jump to a label
+				it.setStoVal(labels[parts[3]]);
+				it.setFlagA(0);
 			}			
 			else
 			{
-				it.h.sto = atoi(parts[3].c_str());
-				it.h.pad = 1;
+				//jump to a line number
+				it.setStoVal(atoi(parts[3].c_str()));
+				it.setFlagA(1);
 			}
 		}
 		else if(parts[0] == "BLT")
 		{
-			it.h.op = BLT;
-			it.h.opda = parseReg(parts[1], j);
-			it.h.opdb = parseReg(parts[2], j);
+			it.setOpCode(BLT);
+			it.setOpdb(parseReg(parts[2], j));
 			if(isalpha(parts[3][0]))
 			{
-				it.h.sto = labels[parts[3]];
-				it.h.pad = 0;
+				//jump to a label
+				it.setStoVal(labels[parts[3]]);
+				it.setFlagA(0);
 			}			
 			else
 			{
-				it.h.sto = atoi(parts[3].c_str());
-				it.h.pad = 1;
+				//jump to a line number
+				it.setStoVal(atoi(parts[3].c_str()));
+				it.setFlagA(1);
 			}
 		}
 		else if(parts[0] == "HALT")
 		{
-			it.h.op = HALT;
+			it.setOpCode(HALT);
 		}
 		else
 		{
 			continue;
 		}
-		instructions.push_back(it.ival);
+		instructions.push_back(it.VALUE);
 	}
 	DSTAT("Parse Finished.");
 }
