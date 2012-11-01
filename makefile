@@ -7,8 +7,8 @@ CC=g++
 CFLAGS=
 
 
-all: system.o thread.o utils.o
-	$(CC) main.cpp system.o thread.o utils.o $(CFLAGS) -o testrun
+all: system.o thread.o utils.o instruction.o
+	$(CC) main.cpp system.o thread.o utils.o instruction.o $(CFLAGS) -o testrun
 
 debug: clean debug_set all
 
@@ -36,6 +36,8 @@ rebuild: clean all
 # Start Tests
 
 alltests: clean instructionTest
+	$(eval TESTOUT := $(shell echo `./instrTest`))	
+	echo $(TESTOUT)
 
 instructionTest: instruction.o
 	$(CC) instructionTest.cpp instruction.o $(CFLAGS) -o instrTest
