@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-#ifdef DEBUG
+#ifdef VERBOSE
 	#define DSTAT(VAR) cout << VAR  << "\n";
 #else
 	#define DSTAT(VAR) 

@@ -4,6 +4,7 @@
 # I want to try clang out sometime
 CC=g++
 
+
 CFLAGS=
 
 
@@ -13,7 +14,7 @@ all: system.o thread.o utils.o instruction.o
 debug: clean debug_set all
 
 debug_set: 
-	$(eval CFLAGS := -DDEBUG)
+	$(eval CFLAGS := -DVERBOSE -g)
 
 system.o: 
 	$(CC) -c system.cpp  $(CFLAGS)

@@ -148,12 +148,12 @@ void System::Execute(Thread &t, int count)
 				break;
 			case LR:
 				DSTAT("Memory at: " << i.getOpda() << " " << i.getOpdbAlt());
-				DSTAT("READING: " << memory[t.registers[i.getOpdbAlt()]]); 
-				t.registers[i.getOpda()] = memory[t.registers[i.getOpdbAlt()]];
+				DSTAT("READING: " << memory[t.registers[i.getOpdb()]]); 
+				t.registers[i.getOpda()] = memory[t.registers[i.getOpdb()]];
 				break;
 			case SR:
 				DSTAT("Storing Value " << t.registers[i.getOpda()]);
-				memory[t.registers[i.getOpdbAlt()]] = t.registers[i.getOpda()];
+				memory[t.registers[i.getOpdb()]] = t.registers[i.getOpda()];
 				break;
 			case JR:
 				t.IC = t.registers[i.getOpda()] - 1;
@@ -162,7 +162,7 @@ void System::Execute(Thread &t, int count)
 				t.IC = i.getOpdbAlt() - 1;
 				break;
 			case MOV:
-				t.registers[i.getOpdbAlt()] = t.registers[i.getOpda()];
+				t.registers[i.getOpdb()] = t.registers[i.getOpda()];
 				break;
 			case BEQ:
 				DSTAT("reg[a] = " << t.registers[i.getOpda()] << " reg[b] = " << t.registers[i.getOpdb()]);
