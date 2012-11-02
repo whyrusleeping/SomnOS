@@ -30,14 +30,6 @@
 //For two operand commands, the second longer operand:
 #define T_OPDB 0x3FFFFC
 
-#ifdef DEBUG
-	#define DSTAT(VAR) cout << VAR  << "\n";
-#else
-	#define DSTAT(VAR) 
-#endif
-
-#include "instrDefs.h"
-
 class Instruction
 {
 	public:

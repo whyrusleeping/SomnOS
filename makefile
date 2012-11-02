@@ -36,8 +36,9 @@ rebuild: clean all
 # Start Tests
 
 alltests: clean instructionTest
-	$(eval TESTOUT := $(shell echo `./instrTest`))	
-	echo $(TESTOUT)
+	./instrTest
+	@echo "Success!"
+
 
 instructionTest: instruction.o
 	$(CC) instructionTest.cpp instruction.o $(CFLAGS) -o instrTest

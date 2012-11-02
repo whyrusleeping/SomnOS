@@ -27,7 +27,13 @@ int main()
 	in.setOpCode(17);
 	in.setOpda(27);
 	in.setOpdbAlt(987321);
-	cout << in.getOpCode() << " 987321= " << in.getOpdbAlt() << " 27= " << in.getOpda() << "\n";
+	
+	pass &= (17 == in.getOpCode());
+	pass &= (27 == in.getOpda());
+	pass &= (987321 == in.getOpdbAlt());
+
+	if(!pass)
+		return 1;
 
 	return 0;
 }
