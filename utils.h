@@ -1,10 +1,15 @@
 #ifndef SOMN_UTILS_H
 #define SOMN_UTILS_H
 
-#include "instrDefs.h"
 #include <vector>
 #include <string>
 #include <iostream>
+
+#ifdef DEBUG
+	#define DSTAT(VAR) cout << VAR  << "\n";
+#else
+	#define DSTAT(VAR) 
+#endif
 
 using std::cout;
 using std::vector;

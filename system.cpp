@@ -124,88 +124,88 @@ void System::Execute(Thread &t, int count)
 	{ 
 		//i.ival = t.instructions[t.IC];
 		i.VALUE = memory[t.IC];
-		DSTAT("Operand: " << i.get << "  IC: " << t.IC);
-		switch(i.h.op)
+		DSTAT("Operand: " << i.getOpCode() << "  IC: " << t.IC);
+		switch(i.getOpCode())
 		{
 			case ADD:
-				t.registers[i.h.sto] = t.registers[i.h.opda] + t.registers[i.h.opdb];
+				t.registers[i.getStoVal()] = t.registers[i.getOpda()] + t.registers[i.getOpdb()];
 				break;
 			case SUB:
-				t.registers[i.h.sto] = t.registers[i.h.opda] - t.registers[i.h.opdb];
+				t.registers[i.getStoVal()] = t.registers[i.getOpda()] - t.registers[i.getOpdb()];
 				break;
 			case MUL:
-				t.registers[i.h.sto] = t.registers[i.h.opda] * t.registers[i.h.opdb];
+				t.registers[i.getStoVal()] = t.registers[i.getOpda()] * t.registers[i.getOpdb()];
 				break;
 			case DIV:
-				t.registers[i.h.sto] = t.registers[i.h.opda] / t.registers[i.h.opdb];
+				t.registers[i.getStoVal()] = t.registers[i.getOpda()] / t.registers[i.getOpdb()];
 				break;
 			case PRINT:
 				DSTAT(t.name << ":" << t.IC);
-				cout << t.registers[i.t.opda] << "\n";
+				cout << t.registers[i.getOpda()] << "\n";
 				break;
 			case LI:
-				t.registers[i.t.opda] = i.t.opdb;
+				t.registers[i.getOpda()] = i.getOpdbAlt();
 				break;
 			case LR:
-				DSTAT("Memory at: " << i.t.opda << " " << i.t.opdb);
-				DSTAT("READING: " << memory[t.registers[i.t.opdb]]); 
-				t.registers[i.t.opda] = memory[t.registers[i.t.opdb]];
+				DSTAT("Memory at: " << i.getOpda() << " " << i.getOpdbAlt());
+				DSTAT("READING: " << memory[t.registers[i.getOpdbAlt()]]); 
+				t.registers[i.getOpda()] = memory[t.registers[i.getOpdbAlt()]];
 				break;
 			case SR:
-				DSTAT("Storing Value " << t.registers[i.t.opda]);
-				memory[t.registers[i.t.opdb]] = t.registers[i.t.opda];
+				DSTAT("Storing Value " << t.registers[i.getOpda()]);
+				memory[t.registers[i.getOpdbAlt()]] = t.registers[i.getOpda()];
 				break;
 			case JR:
-				t.IC = t.registers[i.t.opda] - 1;
+				t.IC = t.registers[i.getOpda()] - 1;
 				break;
 			case JMP:
-				t.IC = i.t.opdb - 1;
+				t.IC = i.getOpdbAlt() - 1;
 				break;
 			case MOV:
-				t.registers[i.t.opdb] = t.registers[i.t.opda];
+				t.registers[i.getOpdbAlt()] = t.registers[i.getOpda()];
 				break;
 			case BEQ:
-				DSTAT("reg[a] = " << t.registers[i.h.opda] << " reg[b] = " << t.registers[i.h.opdb]);
-				if(t.registers[i.h.opda] == t.registers[i.h.opdb])
+				DSTAT("reg[a] = " << t.registers[i.getOpda()] << " reg[b] = " << t.registers[i.getOpdb()]);
+				if(t.registers[i.getOpda()] == t.registers[i.getOpdb()])
 				{
-					if(i.h.pad == 1)
-						t.IC = t.registers[i.h.sto] - 1;
+					if(i.getFlagA() == 1)
+						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.h.sto - 1;
+						t.IC = i.getStoVal() - 1;
 				}
 				break;
 			case BNE:
-				if(t.registers[i.h.opda] != t.registers[i.h.opdb])
+				if(t.registers[i.getOpda()] != t.registers[i.getOpdb()])
 				{
-					if(i.h.pad == 1)
-						t.IC = t.registers[i.h.sto] - 1;
+					if(i.getFlagA() == 1)
+						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.h.sto - 1;
+						t.IC = i.getStoVal() - 1;
 				}	
 				break;
 			case BGT:
-				if(t.registers[i.h.opda] > t.registers[i.h.opdb])
+				if(t.registers[i.getOpda()] > t.registers[i.getOpdb()])
 				{
-					if(i.h.pad == 1)
-						t.IC = t.registers[i.h.sto] - 1;
+					if(i.getFlagA() == 1)
+						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.h.sto - 1;
+						t.IC = i.getStoVal() - 1;
 				}
 				break;
 			case BLT:
-				if(t.registers[i.h.opda] < t.registers[i.h.opdb])
+				if(t.registers[i.getOpda()] < t.registers[i.getOpdb()])
 				{
-					if(i.h.pad == 1)
-						t.IC = t.registers[i.h.sto] - 1;
+					if(i.getFlagA() == 1)
+						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.h.sto - 1;
+						t.IC = i.getStoVal() - 1;
 				}
 				break;
 
 		}
 		t.IC++;
 	}	
-	if(i.h.op == HALT)
+	if(i.getOpCode() == HALT)
 	{
 		t.Alive = false;
 	}

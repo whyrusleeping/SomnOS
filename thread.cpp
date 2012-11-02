@@ -256,22 +256,24 @@ void Thread::SetMemLoc(int l)
 	memStart = l;
 	for(int i = 0; i < instructions.size(); i++)
 	{
-		instrHOP& is = *((instrHOP*)&instructions[i]);
-		switch(is.op)
+		Instruction is;
+		is.VALUE = instructions[i];	
+		switch(is.getOpCode())
 		{
 			case JR:
 				cout << "not sure how to link JR...\n";
 				break;
 			case JMP:
-				is.opdb += l;
+				is.setOpdbAlt(is.getOpdbAlt() + l);
 			   	break;
 			case BNE:
 			case BEQ:
 			case BGT:
 			case BLT:
-				is.sto += l;
+				is.setStoVal(is.getStoVal() + l);
 
 		}
+		instructions[i] = is.VALUE;
 	}
 }
 
