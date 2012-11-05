@@ -5,12 +5,13 @@
 CC=g++
 
 BIN=../bin/
+NAME=testrun
 
 CFLAGS=
 
 
 all: system.o thread.o utils.o instruction.o
-	$(CC) main.cpp system.o thread.o utils.o instruction.o $(CFLAGS) -o testrun
+	$(CC) main.cpp system.o thread.o utils.o instruction.o $(CFLAGS) -o $(BIN)$(NAME)
 
 debug: clean debug_set all
 
