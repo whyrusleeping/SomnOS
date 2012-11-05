@@ -1,6 +1,10 @@
 #ifndef SOMN_INSTRUCTIONS_H
 #define SOMN_INSTRUCTIONS_H
 
+#include <iostream>
+
+using std::cout;
+
 //Command opcodes
 #define OPCODE 0xF8000000
 #define ADD 0
@@ -58,6 +62,8 @@ class Instruction
 		void setFlagB(int optb);
 
 		int VALUE;
+
+		void print();
 };
 
 #endif

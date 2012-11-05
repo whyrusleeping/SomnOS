@@ -77,3 +77,31 @@ void Instruction::setFlagB(int fb)
 {
 	VALUE = (fb | (VALUE & (~H_FB)));
 }
+
+void Instruction::print()
+{
+	switch(getOpCode())
+	{
+		case ADD: cout << "ADD ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case SUB: cout << "SUB ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case MUL: cout << "MUL ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case DIV: cout << "DIV ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case BEQ: cout << "BEQ ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case BNE: cout << "BNE ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case BLT: cout << "BLT ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case BGT: cout << "BGT ";
+			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+		case LI:  cout << "LI " << getOpda() << " " << getOpdbAlt(); break;
+
+		default: cout << "OTHER";
+	}
+
+	cout << "\n";
+}

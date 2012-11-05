@@ -284,3 +284,12 @@ void Thread::SetPriority(int p)
 		priority = p;
 	}
 }
+
+void Thread::printProgram()
+{
+	for(int i = 0; i < instructions.size(); i++)
+	{
+		Instruction is(instructions[i]);
+		is.print();
+	}
+}

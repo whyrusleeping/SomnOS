@@ -92,6 +92,7 @@ void System::Start()
 		
 		for(int i = 0; i < threads.size(); i++)
 		{
+			cout << "Thread Count: " << threads.size() << "\n";
 			Execute(threads[i],2 + threads[i].priority);
 			if(!threads[i].Alive)
 			{
