@@ -172,7 +172,7 @@ void System::Execute(Thread &t, int count)
 					if(i.getFlagA() == 1)
 						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.getStoVal() - 1;
+						t.IC = i.getJumpVal() - 1;
 				}
 				break;
 			case BNE:
@@ -181,7 +181,7 @@ void System::Execute(Thread &t, int count)
 					if(i.getFlagA() == 1)
 						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.getStoVal() - 1;
+						t.IC = i.getJumpVal() - 1;
 				}	
 				break;
 			case BGT:
@@ -190,7 +190,7 @@ void System::Execute(Thread &t, int count)
 					if(i.getFlagA() == 1)
 						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.getStoVal() - 1;
+						t.IC = i.getJumpVal() - 1;
 				}
 				break;
 			case BLT:
@@ -199,7 +199,7 @@ void System::Execute(Thread &t, int count)
 					if(i.getFlagA() == 1)
 						t.IC = t.registers[i.getStoVal()] - 1;
 					else
-						t.IC = i.getStoVal() - 1;
+						t.IC = i.getJumpVal() - 1;
 				}
 				break;
 

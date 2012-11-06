@@ -58,24 +58,35 @@ void Instruction::setStoVal(int sto)
 	VALUE = ((sto << 12) | (VALUE & (~H_STO)));
 }
 
-int Instruction::getFlagA()
+int Instruction::getFlagB()
 {
 	return (VALUE & H_FA) >> 1;
 }
 
-void Instruction::setFlagA(int fa)
+
+void Instruction::setFlagB(int fa)
 {
 	VALUE = ((fa << 1) | (VALUE & (~H_FA)));
 }
 
-int Instruction::getFlagB()
+int Instruction::getFlagA()
 {
 	return (VALUE & H_FB);
 }
 
-void Instruction::setFlagB(int fb)
+void Instruction::setFlagA(int fb)
 {
 	VALUE = (fb | (VALUE & (~H_FB)));
+}
+
+int Instruction::getJumpVal()
+{
+	return (VALUE & LABEL_GET) >> 1;
+}
+
+void Instruction::setJumpVal(int jval)
+{
+	VALUE = ((jval << 1) | (VALUE & (~LABEL_GET)));
 }
 
 void Instruction::print()
@@ -99,6 +110,14 @@ void Instruction::print()
 		case BGT: cout << "BGT ";
 			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
 		case LI:  cout << "LI " << getOpda() << " " << getOpdbAlt(); break;
+		case SR:
+				  cout << "SR " << getOpda() << " " << getOpdb(); break;
+		case LR:
+				  cout << "LR " << getOpda() << " " << getOpdb(); break;
+		case PRINT:
+				  cout << "PRINT " << getOpda(); break;
+		case HALT:
+				  cout << "HALT"; break;
 
 		default: cout << "OTHER";
 	}

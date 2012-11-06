@@ -32,6 +32,20 @@ int main()
 	pass &= (27 == in.getOpda());
 	pass &= (987321 == in.getOpdbAlt());
 
+	in.VALUE = 0;
+	in.setOpCode(27);
+	in.setOpda(19);
+	in.setOpdb(31);
+	in.setJumpVal(34476);
+	in.setFlagA(1);
+
+	pass &= (27 == in.getOpCode());
+	pass &= (19 == in.getOpda());
+	pass &= (31 == in.getOpdb());
+	pass &= (34476 == in.getJumpVal());
+	pass &= (1 == in.getFlagA());
+
+
 	if(!pass)
 		return 1;
 

@@ -59,6 +59,7 @@ void Thread::Parse(char *filename)
 		getline(asmf, line);
 		if(startsWith(line, "LAB"))
 		{
+			cout << "Adding label from line: " << line << "\n";
 			string tmpLab = line.substr(4);
 			labels[tmpLab] = labelCounter;
 		}
@@ -152,11 +153,11 @@ void Thread::Parse(char *filename)
 			it.setOpCode(JMP);
 			if(isalpha(parts[1][0]))
 			{
-				it.setOpdbAlt(labels[parts[1]]);
+				it.setJumpVal(labels[parts[1]]);
 			}			
 			else
 			{
-				it.setOpdbAlt(atoi(parts[1].c_str()));
+				it.setJumpVal(atoi(parts[1].c_str()));
 			}
 		}
 		else if(parts[0] == "BEQ")
@@ -167,13 +168,13 @@ void Thread::Parse(char *filename)
 			if(isalpha(parts[3][0]))
 			{
 				//jump to a label
-				it.setStoVal(labels[parts[3]]);
+				it.setJumpVal(labels[parts[3]]);
 				it.setFlagA(0);
 			}			
 			else
 			{
 				//jump to a line number
-				it.setStoVal(atoi(parts[3].c_str()));
+				it.setJumpVal(atoi(parts[3].c_str()));
 				it.setFlagA(1);
 			}
 		}
@@ -185,13 +186,13 @@ void Thread::Parse(char *filename)
 			if(isalpha(parts[3][0]))
 			{
 				//jump to a label
-				it.setStoVal(labels[parts[3]]);
+				it.setJumpVal(labels[parts[3]]);
 				it.setFlagA(0);
 			}			
 			else
 			{
 				//jump to a line number
-				it.setStoVal(atoi(parts[3].c_str()));
+				it.setJumpVal(atoi(parts[3].c_str()));
 				it.setFlagA(1);
 			}
 		}
@@ -203,13 +204,13 @@ void Thread::Parse(char *filename)
 			if(isalpha(parts[3][0]))
 			{
 				//jump to a label
-				it.setStoVal(labels[parts[3]]);
+				it.setJumpVal(labels[parts[3]]);
 				it.setFlagA(0);
 			}			
 			else
 			{
 				//jump to a line number
-				it.setStoVal(atoi(parts[3].c_str()));
+				it.setJumpVal(atoi(parts[3].c_str()));
 				it.setFlagA(1);
 			}
 		}
@@ -220,13 +221,13 @@ void Thread::Parse(char *filename)
 			if(isalpha(parts[3][0]))
 			{
 				//jump to a label
-				it.setStoVal(labels[parts[3]]);
+				it.setJumpVal(labels[parts[3]]);
 				it.setFlagA(0);
 			}			
 			else
 			{
 				//jump to a line number
-				it.setStoVal(atoi(parts[3].c_str()));
+				it.setJumpVal(atoi(parts[3].c_str()));
 				it.setFlagA(1);
 			}
 		}
@@ -252,6 +253,7 @@ void Thread::Reset()
 void Thread::SetMemLoc(int l)
 {
 	//'linking' sort of..
+	cout << "Mem start: " <<  l << "\n";
 	IC = l;
 	memStart = l;
 	for(int i = 0; i < instructions.size(); i++)
@@ -270,7 +272,11 @@ void Thread::SetMemLoc(int l)
 			case BEQ:
 			case BGT:
 			case BLT:
-				is.setStoVal(is.getStoVal() + l);
+				cout << "Updating: ";
+				is.print();
+				is.setJumpVal(is.getJumpVal() + l);
+				cout << "To: ";
+				is.print();
 
 		}
 		instructions[i] = is.VALUE;

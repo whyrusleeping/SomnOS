@@ -31,6 +31,9 @@ using std::cout;
 #define H_FA   0x2
 #define H_FB   0x1
 
+//for labels
+#define LABEL_GET 0x1FFFE
+
 //For two operand commands, the second longer operand:
 #define T_OPDB 0x3FFFFC
 
@@ -60,6 +63,9 @@ class Instruction
 
 		int getFlagB();
 		void setFlagB(int optb);
+
+		int getJumpVal();
+		void setJumpVal(int jval);
 
 		int VALUE;
 
