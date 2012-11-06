@@ -14,10 +14,6 @@ int main()
 	Thread ad(f3);
 	Thread ne(f4);
 	
-	kb.printProgram();
-	std::cin.ignore();
-	ad.printProgram();
-	std::cin.ignore();
 
 	//th.SetPriority(20);
 
@@ -28,7 +24,7 @@ int main()
 	sys.LoadProcess(th);
 	sys.LoadProcess(re);
 	sys.LoadProcess(ad);
-	//sys.LoadProcess(ne);
+	sys.LoadProcess(ne);
 	
 	//sys.Start();
 	sys.Test();

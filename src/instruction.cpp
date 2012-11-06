@@ -94,21 +94,21 @@ void Instruction::print()
 	switch(getOpCode())
 	{
 		case ADD: cout << "ADD ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case SUB: cout << "SUB ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case MUL: cout << "MUL ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case DIV: cout << "DIV ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case BEQ: cout << "BEQ ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case BNE: cout << "BNE ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case BLT: cout << "BLT ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case BGT: cout << "BGT ";
-			cout << getOpda() << " " << getOpdb() << " " << getStoVal(); break;
+			cout << getOpda() << " " << getOpdb() << " " << getJumpVal(); break;
 		case LI:  cout << "LI " << getOpda() << " " << getOpdbAlt(); break;
 		case SR:
 				  cout << "SR " << getOpda() << " " << getOpdb(); break;
