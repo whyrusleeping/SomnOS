@@ -44,13 +44,13 @@ void System::SetKeyboardNonBlock()
 
 void System::Test()
 {
-	SetKeyboardNonBlock();
+	//SetKeyboardNonBlock();
 	//bool nrun = true;
 	int a = 50;
 	char inp = 0;
 	while(run)
 	{
-		inp = getchar();
+		//inp = getchar();
 		if(inp > 0)
 		{
 			memory[KEYBOARD_BUFFER] = inp;
@@ -61,6 +61,7 @@ void System::Test()
 		{
 			cout << (char)memory[SCREEN_BUFFER];
 			memory[SCREEN_BUFFER] = 0;
+//			std::cin.ignore();
 		}
 
 		for(int i = 0; i < threads.size(); i++)
@@ -77,7 +78,7 @@ void System::Test()
 			run = false;
 
 	}
-	RestoreKeyboardBlocking();
+	//RestoreKeyboardBlocking();
 }
 
 //Main system scheduler
@@ -202,6 +203,17 @@ void System::Execute(Thread &t, int count)
 						t.IC = i.getJumpVal() - 1;
 				}
 				break;
+			case RET:
+				t.IC = t.registers[31];
+				cout << "Returned to " << t.IC << "\n";
+				break;
+			case JAL:
+				t.registers[31] = t.IC;
+				t.IC = i.getJumpVal() - 1;
+				DSTAT("Stored Line " << t.registers[31] << "\n");
+				DSTAT("Jumped to " << t.IC << "\n");
+				break;
+
 
 		}
 		t.IC++;

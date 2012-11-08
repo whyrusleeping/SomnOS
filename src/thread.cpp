@@ -59,8 +59,8 @@ void Thread::Parse(char *filename)
 		getline(asmf, line);
 		if(startsWith(line, "LAB"))
 		{
-			cout << "Adding label from line: " << line << "\n";
-			string tmpLab = line.substr(4);
+			DSTAT("Adding label from line: " << line << "\n");
+			string tmpLab = splitString(line, ' ')[1];
 			labels[tmpLab] = labelCounter;
 		}
 		else if(startsWith(line, "//"))
@@ -159,6 +159,23 @@ void Thread::Parse(char *filename)
 			{
 				it.setJumpVal(atoi(parts[1].c_str()));
 			}
+		}
+		else if(parts[0] == "JAL")
+		{
+			it.setOpCode(JAL);
+			if(!isalpha(parts[1][0]))
+			{
+				cout << "JAL must point to a Label, Line " << j << "\n";
+				exit(1);
+			}
+			else
+			{
+				it.setJumpVal(labels[parts[1]]);
+			}
+		}
+		else if(parts[0] == "RET")
+		{
+			it.setOpCode(RET);
 		}
 		else if(parts[0] == "BEQ")
 		{
@@ -298,4 +315,9 @@ void Thread::printProgram()
 		Instruction is(instructions[i]);
 		is.print();
 	}
+}
+
+void Thread::saveBinary(char *filename)
+{
+	
 }

@@ -27,6 +27,8 @@ class Thread
 		void SetMemLoc(int l);
 		void SetPriority(int p);
 		void printProgram();
+		void saveBinary(char *filename);
+		void loadBinary(char *filename);
 	private:
 		vector<int> instructions;
 		vector<int> registers;

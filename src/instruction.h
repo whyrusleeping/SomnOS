@@ -22,7 +22,11 @@ using std::cout;
 #define BNE 12
 #define BLT 13
 #define BGT 14
-#define HALT 15
+#define RET 15
+#define JAL 16
+#define HALT 17
+
+
 
 //Three operand bitmasks
 #define H_OPDA 0x7C00000
