@@ -4,4 +4,5 @@ all:
 rebuild:
 	cd src; make rebuild;
 
-
+debug:
+	cd src; make debug;

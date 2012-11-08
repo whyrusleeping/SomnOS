@@ -1,15 +1,18 @@
 LI r0 #516 //screen buffer
-LI r1 #72
-LI r2 #69
-LI r3 #76
-LI r4 #79
 LI r10 #0
-
+JAL PrintChar
+LI r5 #72
+JAL PrintChar
+LI r5 #69
+JAL PrintChar
+LI r5 #76
+JAL PrintChar
+JAL PrintChar
+LI r5 #79
+JAL PrintChar
 HALT
-
 LAB PrintChar //prints character in r5
 LR r6 r0
 BNE r6 r10 PrintChar
 SR r5 r0
 RET
-

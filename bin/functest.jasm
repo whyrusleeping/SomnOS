@@ -1,0 +1,10 @@
+LI r3 #12
+JAL PrintNum
+LI r3 #19
+JAL PrintNum
+LI r3 #12852
+JAL PrintNum
+HALT
+LAB PrintNum
+PRINT r3
+RET
