@@ -18,16 +18,16 @@ debug: clean debug_set all
 debug_set: 
 	$(eval CFLAGS := -DVERBOSE -g)
 
-system.o: 
+system.o: system.cpp
 	$(CC) -c system.cpp  $(CFLAGS)
 
-thread.o:
+thread.o: thread.cpp
 	$(CC) -c thread.cpp $(CFLAGS)
 
-utils.o:
+utils.o: utils.cpp
 	$(CC) -c utils.cpp $(CFLAGS)
 
-instruction.o:
+instruction.o: instruction.cpp
 	$(CC) -c instruction.cpp $(CFLAGS)
 
 clean:
