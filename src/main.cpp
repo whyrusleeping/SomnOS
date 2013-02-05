@@ -23,9 +23,13 @@ int main()
 	DSTAT("loading processes...");
 
 
+	cout << "This test routine will load two 'programs' and run them concurrently.\nThe first program counts down from 30 to zero.\n";
+	cout << "The second program will count up to 20, they will execute at the same time.\npress any key to start...";
+	std::cin.ignore();
+	
 	//sys.LoadProcess(kb);
 	//sys.LoadProcess(th);
-	//sys.LoadProcess(re);
+	sys.LoadProcess(re);
 	sys.LoadProcess(ad);
 	//sys.LoadProcess(ne);
 	//sys.LoadProcess(fnc);
