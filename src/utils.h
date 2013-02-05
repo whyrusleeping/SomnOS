@@ -17,5 +17,7 @@ using std::string;
 
 vector<string> splitString(string s, char delim);
 bool startsWith(string src, string t);
+bool isEmptyOrWhitespace(string s);
+void inline stripQuotes(string &s);
 
 #endif

@@ -1,3 +1,6 @@
 Somnos
 
+Short Term Goal: Support for strings in the 'assembly' code
+
 Goal: To build a virtual computer from a very low level base (assembly at first, maybe simulating some sort of logic circuitry later?) and build up to multithreading, some sort of console, programs, a filesystem, and more!
+

@@ -104,4 +104,4 @@ HALT - Halt
 ex:
 	HALT
 
-When this command is executed, the process exits
+When this command is executed, the process stops all execution.

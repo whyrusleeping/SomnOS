@@ -8,6 +8,7 @@ Thread::Thread()
 	IC = 0;
 	Alive = true;
 	priority = 0;
+	instrStart = 0;
 }
 
 Thread::Thread(char *filename)
@@ -17,6 +18,7 @@ Thread::Thread(char *filename)
 	IC = 0;
 	Alive = true;
 	priority = 0;
+	instrStart = 0;
 	Parse(filename);
 }
 
@@ -52,6 +54,7 @@ void Thread::Parse(char *filename)
 	instructions.resize(0);
 	int labelCounter = 0;
 	map<string, int> labels;
+	map<string, string> stringLits;
 
 	//Pre-parsing
 	while(asmf.good())
@@ -63,20 +66,39 @@ void Thread::Parse(char *filename)
 			string tmpLab = splitString(line, ' ')[1];
 			labels[tmpLab] = labelCounter;
 		}
+		else if(startsWith(line ,"STR"))
+		{
+			vector<string> brkLine = splitString(line, ' ');
+			stringLits[brkLine[1]] = brkLine[2];
+		}
 		else if(startsWith(line, "//"))
 		{
 			//do nothing, ignore comments
 		}
 		else
 		{
-			labelCounter++;
-			lines.push_back(line);
+			if(line != "")
+			{
+				labelCounter++;
+				lines.push_back(line);
+			}
 		}
 	}
 
 	asmf.close();
 	DSTAT("finished reading from file");
 
+	//Tranlate string labels into memory locations
+	for(map<string, string>::iterator i = stringLits.begin(); i != stringLits.end(); i++)
+	{
+		labels[(*i).first] = instructions.size();	
+		for(int ix = 0; ix < (*i).second.length(); ix++)
+		{
+			instructions.push_back((*i).second[ix]);
+		}
+	}
+
+	instrStart = instructions.size();
 	//Compiling
 	for(int j = 0; j < lines.size(); j++)
 	{
@@ -258,6 +280,8 @@ void Thread::Parse(char *filename)
 		}
 		instructions.push_back(it.VALUE);
 	}
+
+
 	DSTAT("Parse Finished.");
 }
 
@@ -271,9 +295,11 @@ void Thread::SetMemLoc(int l)
 {
 	//'linking' sort of..
 	cout << "Mem start: " <<  l << "\n";
-	IC = l;
-	memStart = l;
-	for(int i = 0; i < instructions.size(); i++)
+	IC = l + instrStart;
+	memStart = l + instrStart;
+	DSTAT("IC: " << IC);
+	DSTAT("Memstart: " << memStart);
+	for(int i = instrStart; i < instructions.size(); i++)
 	{
 		Instruction is;
 		is.VALUE = instructions[i];	

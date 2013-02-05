@@ -36,6 +36,7 @@ class Thread
 		bool Alive;
 		int priority;
 		int memStart;
+		int instrStart;
 		string name;
 
 		int parseReg(string token, int line);
