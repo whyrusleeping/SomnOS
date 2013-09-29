@@ -8,7 +8,7 @@ int main()
 	char f4[] = "test4.jasm";
 	char f5[] = "test5.jasm";
 	char f6[] = "test6.jasm";
-	char f7[] = "functest.jasm";
+	//char f7[] = "functest.jasm";
 
 	System sys;
 	Thread kb(f5);

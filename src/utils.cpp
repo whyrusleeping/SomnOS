@@ -5,7 +5,7 @@ vector<string> splitString(string s, char delim)
 {
 	vector<string> ret;
 	string temp = "";
-	for(int i = 0; i < s.length(); i++)
+	for(size_t i = 0; i < s.length(); i++)
 	{
 		if(s[i] != delim)
 			temp += s[i];
@@ -25,7 +25,7 @@ bool startsWith(string src, string t)
 {
 	if(src.length() < t.length())
 		return false;
-	for(int i = 0; i < t.length(); i++)
+	for(size_t i = 0; i < t.length(); i++)
 	{
 		if(t[i] != src[i])
 			return false;
@@ -38,7 +38,7 @@ bool isEmptyOrWhitespace(string s)
 	if(s == "")
 		return true;
 	bool ws = true;
-	for(int i = 0; i < s.length(); i++)
+	for(size_t i = 0; i < s.length(); i++)
 		ws &= (s[i] == ' ' || s[i] == '\t');
 	return ws;
 }

@@ -13,7 +13,7 @@ void System::LoadProcess(Thread t)
 	t.SetMemLoc(freeMemI);
 	threads.push_back(t);
 
-	for(int i = 0; i < t.instructions.size(); i++)
+	for(size_t i = 0; i < t.instructions.size(); i++)
 	{
 		memory[freeMemI + i] = t.instructions[i];
 	}
@@ -46,7 +46,7 @@ void System::Test()
 {
 	SetKeyboardNonBlock();
 	//bool nrun = true;
-	int a = 50;
+	//int a = 50;
 	char inp = 0;
 	while(run)
 	{
@@ -64,7 +64,7 @@ void System::Test()
 			std::cin.ignore();
 		}
 
-		for(int i = 0; i < threads.size(); i++)
+		for(size_t i = 0; i < threads.size(); i++)
 		{
 			Execute(threads[i],2 + threads[i].priority);
 			if(!threads[i].Alive)
@@ -87,11 +87,11 @@ void System::Start()
 	SetKeyboardNonBlock();
 	DSTAT("Num Threads: " << threads.size());
 	char inp = 0;
-	int nr = 0;
+	//int nr = 0;
 	while(run)
 	{
 		
-		for(int i = 0; i < threads.size(); i++)
+		for(size_t i = 0; i < threads.size(); i++)
 		{
 			cout << "Thread Count: " << threads.size() << "\n";
 			Execute(threads[i],2 + threads[i].priority);

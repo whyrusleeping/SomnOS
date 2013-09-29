@@ -48,6 +48,7 @@ void Thread::Parse(char *filename)
 	DSTAT("Parsing...\n");
 	Instruction it;
 	ifstream asmf(filename);
+
 	vector<string> parts;
 	vector<string> lines;
 	string line;
@@ -56,6 +57,10 @@ void Thread::Parse(char *filename)
 	map<string, int> labels;
 	map<string, string> stringLits;
 
+	if (!asmf.good()) {
+		cout << "Failed to read file!\n";
+		return;
+	}
 	//Pre-parsing
 	while(asmf.good())
 	{
@@ -92,7 +97,7 @@ void Thread::Parse(char *filename)
 	for(map<string, string>::iterator i = stringLits.begin(); i != stringLits.end(); i++)
 	{
 		labels[(*i).first] = instructions.size();	
-		for(int ix = 0; ix < (*i).second.length(); ix++)
+		for(size_t ix = 0; ix < (*i).second.length(); ix++)
 		{
 			instructions.push_back((*i).second[ix]);
 		}
@@ -100,7 +105,7 @@ void Thread::Parse(char *filename)
 
 	instrStart = instructions.size();
 	//Compiling
-	for(int j = 0; j < lines.size(); j++)
+	for(size_t j = 0; j < lines.size(); j++)
 	{
 		parts = splitString(lines[j], ' ');
 		DSTAT("parsing" << lines[j]);
@@ -299,7 +304,7 @@ void Thread::SetMemLoc(int l)
 	memStart = l + instrStart;
 	DSTAT("IC: " << IC);
 	DSTAT("Memstart: " << memStart);
-	for(int i = instrStart; i < instructions.size(); i++)
+	for(size_t i = instrStart; i < instructions.size(); i++)
 	{
 		Instruction is;
 		is.VALUE = instructions[i];	
@@ -336,7 +341,7 @@ void Thread::SetPriority(int p)
 
 void Thread::printProgram()
 {
-	for(int i = 0; i < instructions.size(); i++)
+	for(size_t i = 0; i < instructions.size(); i++)
 	{
 		Instruction is(instructions[i]);
 		is.print();
